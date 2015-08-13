@@ -34,6 +34,7 @@ public class Myadapter2 extends RecyclerView.Adapter<Myadapter2.myholder> {
     public void onBindViewHolder(final myholder holder, int position) {
         Xiaohau xiaohu=lists.get(position);
         String time=xiaohu.getTime();
+        //去掉时间末尾的毫秒
         time=time.substring(0,time.length()-4);
         holder.time.setText(time);
         holder.title.setText(xiaohu.getTitle());
@@ -56,12 +57,6 @@ public class Myadapter2 extends RecyclerView.Adapter<Myadapter2.myholder> {
             content= (TextView) itemView.findViewById(R.id.text_content);
             time= (TextView) itemView.findViewById(R.id.text_time);
         }
-
-    }
-
-
-    interface  onlongclickretry{
-        void retry();
     }
 
 

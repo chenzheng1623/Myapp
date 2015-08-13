@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public CharSequence getPageTitle(int position) {
                 return listtitles.get(position);
-
             }
         });
         tabLayout.setupWithViewPager(viewPager);

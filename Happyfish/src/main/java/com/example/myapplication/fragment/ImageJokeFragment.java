@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.Myadapter;
+import com.example.myapplication.adapter.Myadapter2;
 import com.example.myapplication.bean.Xiaohau;
+import com.example.myapplication.contrats;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.show.api.ShowApiRequest;
@@ -44,7 +46,7 @@ public class ImageJokeFragment extends Fragment implements SwipeRefreshLayout.On
                 JSONObject jsonobjcon=jsonobj.getJSONObject("showapi_res_body");
                 JSONArray array= jsonobjcon.getJSONArray("contentlist");
                 if (array ==null || array.length()==0){
-                    Toast.makeText(getActivity(),"你已经把今天的图片看完了亲！",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"你已经把今天的内容看完了亲！",Toast.LENGTH_SHORT).show();
                     swipeRefreshLayout.setRefreshing(false);
                     return;
                 }
@@ -55,14 +57,22 @@ public class ImageJokeFragment extends Fragment implements SwipeRefreshLayout.On
                     x=new Xiaohau();
                     x.setTime(obj.getString("ct"));
                     x.setTitle(obj.getString("title"));
-                    x.setImg(obj.getString("img"));
+                    if (currentflag==2){
+                        x.setImg(obj.getString("text"));
+                    }else {
+                        x.setImg(obj.getString("img"));
+                    }
                     lists.add(x);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             Log.i(TAG, "onSuccess "+lists.toString());
-            adapter.notifyDataSetChanged();
+            if (currentflag==2){
+                adapter2.notifyDataSetChanged();
+            }else {
+                adapter.notifyDataSetChanged();
+            }
             swipeRefreshLayout.setRefreshing(false);
         }
         @Override
@@ -75,11 +85,9 @@ public class ImageJokeFragment extends Fragment implements SwipeRefreshLayout.On
     private List<Xiaohau> lists=new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private Myadapter adapter;
+    private Myadapter2 adapter2;
     private LinearLayoutManager manager;
     int lastitem;
-    private static int imgjoke=1;
-    private static int textjoke=2;
-
     private int currentflag;
 
     public static Fragment newinstance(int flag){
@@ -108,18 +116,27 @@ public class ImageJokeFragment extends Fragment implements SwipeRefreshLayout.On
         manager =new LinearLayoutManager(getActivity());
         myrecycleview.setLayoutManager(manager);
         myrecycleview.setItemAnimator(new DefaultItemAnimator());
+        if (currentflag==1){
+            adapter =new Myadapter(getActivity(),lists,currentflag);
+            myrecycleview.setAdapter(adapter);
+        }
+        if (currentflag==2){
+            adapter2 =new Myadapter2(getActivity(),lists);
+            myrecycleview.setAdapter(adapter2);
+        }
 
-        adapter =new Myadapter(getActivity(),lists);
-        myrecycleview.setAdapter(adapter);
         myrecycleview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                Log.i(TAG, "onScrollStateChanged "+newState);
+                //如果滑动停止，显示的最后一项是 list的最后一项就刷新。
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastitem + 1 == adapter.getItemCount()) {
+                    //加载下一页
+                    currentpage++;
                     onRefresh();
                 }
             }
-
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -128,22 +145,38 @@ public class ImageJokeFragment extends Fragment implements SwipeRefreshLayout.On
         });
         return  v;
     }
-    private static int currentpage=0;
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (currentflag==1){
+            url=contrats.IMG_JOKE_URL;
+        }
+        if (currentflag==2){
+            url=contrats.TEXT_JOKE_URL;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        onRefresh();
+    }
+
+    //页数
+    private static int currentpage=1;
+    String url="";
+
     @Override
     public void onRefresh() {
-        currentpage++;
         swipeRefreshLayout.setRefreshing(true);
-        ShowApiRequest app=   new ShowApiRequest("http://route.showapi.com/341-2","5685","1d9909e9dcbc4e38ad2c439f98bc0291")
+        ShowApiRequest app=   new ShowApiRequest(url,contrats.APPID,contrats.SECERT)
                 .setResponseHandler(responseHandler)
                 .addTextPara("time",getdate())
                 .addTextPara("page", currentpage +"");
         app.post();
     }
-
-
     public String getdate(){
         return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     }
-
-
 }

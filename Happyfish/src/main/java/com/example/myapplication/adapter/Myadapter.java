@@ -22,9 +22,11 @@ import java.util.List;
 public class Myadapter extends RecyclerView.Adapter<Myadapter.myholder> {
     private Context context;
     private List<Xiaohau> lists;
-    public Myadapter(Context context, List<Xiaohau> lists){
+    private int flag;
+    public Myadapter(Context context, List<Xiaohau> lists,int flag){
         this.context=context;
         this.lists=lists;
+        this.flag=flag;
     }
 
     @Override
@@ -40,15 +42,19 @@ public class Myadapter extends RecyclerView.Adapter<Myadapter.myholder> {
         String time=xiaohu.getTime();
         time=time.substring(0,time.length()-4);
         holder.time.setText(time);
-        DisplayImageOptions options=new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.food_u)
-                .showImageOnFail(R.drawable.hotel_u)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
+        if (flag==1){
+            DisplayImageOptions options=new DisplayImageOptions.Builder()
+                    .showImageOnLoading(R.drawable.food_u)
+                    .showImageOnFail(R.drawable.hotel_u)
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .bitmapConfig(Bitmap.Config.RGB_565)
+                    .build();
+            ImageLoader.getInstance().displayImage(xiaohu.getImg(),holder.img,options);
+        }
+        if (flag==2){
 
-        ImageLoader.getInstance().displayImage(xiaohu.getImg(),holder.img,options);
+        }
         holder.title.setText(xiaohu.getTitle());
     }
 
