@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="A50">#fce4ec</color>
+    <color name="A00">#000000</color>
+    <color name="A400">#f50057</color>
+    <color name="A200">#ff4081</color>
+    <color name="A100">#ff80ab</color>
+
+    <color name="Z500">#9c27b0</color>
+
+</resources>

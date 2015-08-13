@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">开心的小鱼</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+</resources>
