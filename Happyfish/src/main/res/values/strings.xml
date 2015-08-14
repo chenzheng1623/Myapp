@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">开心的小鱼</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">欢迎来到开心的小鱼</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_show">ShowActivity</string>
 
 </resources>

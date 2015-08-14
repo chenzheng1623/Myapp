@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -7,8 +8,11 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.Window;
 
 import com.example.myapplication.fragment.ImageJokeFragment;
 import com.example.myapplication.fragment.TextJokeFragment;
@@ -25,8 +29,15 @@ public class MainActivity extends AppCompatActivity {
     private List<Fragment>listfragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
+            //设置退出动画
+            getWindow().setExitTransition(new Explode());
+            getWindow().setEnterTransition(new Explode());
+        }
         toolbar= (Toolbar) findViewById(R.id.id_toolbar);
         tabLayout= (TabLayout) findViewById(R.id.tabLayout);
         setSupportActionBar(toolbar);
@@ -77,5 +88,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
 
+
+        return super.onTouchEvent(event);
+    }
 }
