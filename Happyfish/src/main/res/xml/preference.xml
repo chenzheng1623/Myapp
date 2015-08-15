@@ -8,6 +8,7 @@
         android:shouldDisableView="true"
         android:key="ring_key"
         android:showSilent="true"
+        android:defaultValue="cz"
         ></RingtonePreference>
 
     <PreferenceCategory
@@ -18,12 +19,14 @@
             android:title="填写用户名"
             android:summary="填写你的用户名"
             android:dialogTitle="您所使用的用户名是："
+            android:defaultValue="cz"
             />
         <!--通过列表选择性别-->
         <ListPreference
             android:key="gender"
             android:title="性别"
             android:summary="请选择您的性别"
+            android:defaultValue="0"
             android:dialogTitle="listpreference"
             android:entries="@array/gender"
             android:entryValues="@array/gender_values"

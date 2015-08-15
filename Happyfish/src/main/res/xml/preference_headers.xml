@@ -12,6 +12,7 @@
         android:title="界面选项设置"
         android:summary="设置显示界面的相关选项"
         >
+        <!--想这个activity 传一个arguments-->
         <extra
             android:name="website"
             android:value="www.baidu.com"/>
@@ -19,13 +20,12 @@
         <header
             android:icon="@mipmap/ic_launcher"
             android:title="使用intent"
-            android:summary="使用intent启动某个activity"
+            android:summary="使用intent启动某个可以响应这个intent的activity"
             >
             <intent
                 android:action="com.cz.ppp"
                 android:data="http://www.baidu.com"
                 />
-
         </header>
 
 </preference-headers>

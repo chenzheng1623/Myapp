@@ -1,8 +1,12 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -15,7 +19,7 @@ public class SettingActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+     //   setContentView(R.layout.activity_setting);
         if (hasHeaders()){
             Button b=new Button(this);
             b.setText("设置操作");
@@ -29,19 +33,48 @@ public class SettingActivity extends PreferenceActivity {
         loadHeadersFromResource(R.xml.preference_headers,target);
     }
 
+    public static  String TAG="tag";
     @Override
     protected boolean isValidFragment(String fragmentName) {
         return  true;
     }
 
+    public  static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener
+            =new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            if (preference instanceof ListPreference){
+                ListPreference listpreference = (ListPreference) preference;
+                Log.i(TAG, "onPreferenceChange "+newValue.toString());
+                int index=listpreference.findIndexOfValue(newValue.toString());
+                Log.i(TAG, "onPreferenceChange "+index);
+                preference.setSummary(listpreference.getEntries()[index]);
+            }
+
+            return true;
+        }
+    };
     public static  class  prefs1Fragment extends PreferenceFragment{
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preference);
+            bindPreferenceSummaryToValue(findPreference("gender"));
+            bindPreferenceSummaryToValue(findPreference("ring_key"));
+            bindPreferenceSummaryToValue(findPreference("name"));
+            bindPreferenceSummaryToValue(findPreference("autoSave"));
         }
+
     }
+    private static void bindPreferenceSummaryToValue(Preference preference) {
+            preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+
+//            sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+//                    PreferenceManager.getDefaultSharedPreferences(preference.getContext())
+//                    .getString(preference.getKey(),"cz"));
+    }
+
     public static class prefs2Fragment extends  PreferenceFragment{
         @Override
         public void onCreate(Bundle savedInstanceState) {

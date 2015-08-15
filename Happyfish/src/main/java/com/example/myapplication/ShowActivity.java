@@ -16,10 +16,10 @@ public class ShowActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
-            getWindow().setExitTransition(new Explode());
+          //  getWindow().setExitTransition(new Explode());
         }
         setContentView(R.layout.activity_show);
         new Handler().postDelayed(new Runnable() {
@@ -31,9 +31,9 @@ public class ShowActivity extends AppCompatActivity {
                 }else {
                     startActivity(new Intent(ShowActivity.this,MainActivity.class));
                 }
+                finish();
             }
         },2000);
-        finish();
     }
 
     @Override
