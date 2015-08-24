@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -40,7 +43,6 @@ public class ImageJokeFragment extends Fragment implements SwipeRefreshLayout.On
         @Override
         public void onSuccess(int i, Header[] headers, byte[] bytes) {
             String s=new String(bytes);
-            Gson gson=new Gson();
             try {
                 JSONObject jsonobj=new JSONObject(s);
                 JSONObject jsonobjcon=jsonobj.getJSONObject("showapi_res_body");
@@ -86,7 +88,7 @@ public class ImageJokeFragment extends Fragment implements SwipeRefreshLayout.On
     private SwipeRefreshLayout swipeRefreshLayout;
     private Myadapter adapter;
     private Myadapter2 adapter2;
-    private LinearLayoutManager manager;
+    private StaggeredGridLayoutManager manager;
     int lastitem;
     private int currentflag;
 
@@ -113,7 +115,10 @@ public class ImageJokeFragment extends Fragment implements SwipeRefreshLayout.On
         swipeRefreshLayout.setOnRefreshListener(this);
         //出事化recycleview
         myrecycleview = (RecyclerView)v.findViewById(R.id.recycle);
-        manager =new LinearLayoutManager(getActivity());
+//        manager =new LinearLayoutManager(getActivity());
+//        manager=new GridLayoutManager(getActivity(),2);
+        //瀑布流
+        manager=new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         myrecycleview.setLayoutManager(manager);
         myrecycleview.setItemAnimator(new DefaultItemAnimator());
         if (currentflag==1){
@@ -124,7 +129,6 @@ public class ImageJokeFragment extends Fragment implements SwipeRefreshLayout.On
             adapter2 =new Myadapter2(getActivity(),lists);
             myrecycleview.setAdapter(adapter2);
         }
-
         myrecycleview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -140,7 +144,10 @@ public class ImageJokeFragment extends Fragment implements SwipeRefreshLayout.On
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                lastitem = manager.findLastVisibleItemPosition();
+//                lastitem = manager.findLastVisibleItemPosition();
+                int a[]=manager.findLastVisibleItemPositions(null);
+                Arrays.sort(a);
+                lastitem=a[a.length-1];
             }
         });
         return  v;

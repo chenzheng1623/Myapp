@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.example.myapplication.fragment.ImageJokeFragment;
 import com.example.myapplication.fragment.TextJokeFragment;
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
     @Override
@@ -96,5 +96,22 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+    boolean isFirst=true;
+    long firsttime;
+    @Override
+    public void onBackPressed() {
+        if (isFirst){
+            firsttime= System.currentTimeMillis();
+            Toast.makeText(MainActivity.this,"再按一次退出",Toast.LENGTH_SHORT).show();
+            isFirst=false;
+        }else {
+            long secondtime= System.currentTimeMillis();
+            if ((secondtime-firsttime)<2000){
+                finish();
+            }else {
+                firsttime=secondtime;
+            }
+            isFirst=true;
+        }
+    }
 }

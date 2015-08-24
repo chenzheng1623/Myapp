@@ -5,8 +5,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +25,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -54,13 +58,16 @@ public class TextJokeFragment extends Fragment implements SwipeRefreshLayout.OnR
                     x=new Xiaohau();
                     x.setTime(obj.getString("ct"));
                     x.setTitle(obj.getString("title"));
-                    x.setImg(obj.getString("text"));
+                    String content=obj.getString("text");
+                    content.replace("<p>","  ");
+                    content.replace("</p>","\r\n");
+                    x.setImg(content);
                     lists.add(x);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-           // Log.i(TAG, "onSuccess "+lists.toString());
+            // Log.i(TAG, "onSuccess "+lists.toString());
             adapter2.notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -74,7 +81,7 @@ public class TextJokeFragment extends Fragment implements SwipeRefreshLayout.OnR
     private List<Xiaohau> lists=new ArrayList<>();
     private SwipeRefreshLayout swipeRefreshLayout;
     private Myadapter2 adapter2;
-    private LinearLayoutManager manager;
+    private StaggeredGridLayoutManager manager;
     int lastitem;
 
     public static Fragment newinstance(){
@@ -90,15 +97,15 @@ public class TextJokeFragment extends Fragment implements SwipeRefreshLayout.OnR
         //初始化下啦刷新控件
         swipeRefreshLayout= (SwipeRefreshLayout)v.findViewById(R.id.refsh);
         swipeRefreshLayout.setOnRefreshListener(this);
-        //出事化recycleview
+        //初始化recycleview
         recyclerView= (RecyclerView)v.findViewById(R.id.recycle);
-        manager =new LinearLayoutManager(getActivity());
+//      manager =new LinearLayoutManager(getActivity());
+//        manager=new GridLayoutManager(getActivity(),2);
+        manager=new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         adapter2 =new Myadapter2(getActivity(),lists);
         recyclerView.setAdapter(adapter2);
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -111,7 +118,10 @@ public class TextJokeFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                lastitem=  manager.findLastVisibleItemPosition();
+//              lastitem=  manager.findLastVisibleItemPosition();
+                int a[]=manager.findLastVisibleItemPositions(null);
+                Arrays.sort(a);
+                lastitem=a[a.length-1];
             }
         });
         return  v;
