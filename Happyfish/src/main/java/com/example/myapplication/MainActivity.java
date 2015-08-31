@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private List<String> listtitles;
     private TabLayout tabLayout;
     private List<Fragment>listfragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
@@ -72,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
     }
 
     @Override
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     boolean isFirst=true;
-    long firsttime;
+    long firsttime=0;
     @Override
     public void onBackPressed() {
         if (isFirst){
