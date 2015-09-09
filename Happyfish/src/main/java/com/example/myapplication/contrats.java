@@ -14,7 +14,4 @@ public class contrats {
     public static int imgjoke=1;
     public static int textjoke=2;
 
-
-
-
 }

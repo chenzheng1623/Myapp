@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.myapplication.fragment.KuaidiFragment">
+
+    <EditText
+        android:inputType="number"
+        android:id="@+id/kuaidinumber"
+        style="@style/Base.V7.Widget.AppCompat.EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="718970818897"
+        android:hint="在这里输入你的快递号。" />
+
+    <Spinner
+        android:entries="@array/kuaidi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner" />
+
+    <Button
+        android:id="@+id/chaxun"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="查询"/>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>

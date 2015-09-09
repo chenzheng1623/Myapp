@@ -19,6 +19,7 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.example.myapplication.fragment.ImageJokeFragment;
+import com.example.myapplication.fragment.KuaidiFragment;
 import com.example.myapplication.fragment.TextJokeFragment;
 
 import java.util.ArrayList;
@@ -49,9 +50,11 @@ public class MainActivity extends AppCompatActivity {
         listtitles=new ArrayList<>();
         listtitles.add("搞笑图片");
         listtitles.add("笑话");
+        listtitles.add("快递查询");
         listfragment=new ArrayList<>();
         listfragment.add(ImageJokeFragment.newinstance(1));
         listfragment.add(TextJokeFragment.newinstance());
+        listfragment.add(KuaidiFragment.newInstance());
         viewPager= (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
